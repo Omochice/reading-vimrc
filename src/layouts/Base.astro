@@ -3,10 +3,10 @@ import Navigation from '../components/Navigation.astro';
 import GoogleAnalytics from '../components/GoogleAnalytics.astro';
 import { withBase } from '../lib/path';
 
-interface Props {
+type Props = {
   title?: string;
   active?: 'home' | 'archive' | 'stat';
-}
+};
 
 const { title, active } = Astro.props;
 ---

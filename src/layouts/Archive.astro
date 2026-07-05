@@ -2,11 +2,11 @@
 import Base from './Base.astro';
 import { withBase } from '../lib/path';
 
-interface Props {
+type Props = {
   title: string;
   /** タイトル見出しのリンク先（このページ自身の URL）。 */
   pageUrl: string;
-}
+};
 
 const { title, pageUrl } = Astro.props;
 ---

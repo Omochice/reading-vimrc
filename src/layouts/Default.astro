@@ -2,12 +2,12 @@
 import Base from './Base.astro';
 import { withBase } from '../lib/path';
 
-interface Props {
+type Props = {
   title?: string;
   active?: 'home' | 'archive' | 'stat';
   /** ロゴ見出しのリンク先。現行の default.html はページ自身の URL を指していた。 */
   href: string;
-}
+};
 
 const { title, active, href } = Astro.props;
 ---

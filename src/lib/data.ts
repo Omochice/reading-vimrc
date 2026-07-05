@@ -3,20 +3,20 @@ import { fileURLToPath } from 'node:url';
 import { parse } from 'yaml';
 
 /** 各回で読んだ vimrc ファイル 1 件。古い項目と新しい項目で持つキーが異なる。 */
-export interface Vimrc {
+export type Vimrc = {
   name: string;
   url: string;
   raw_url?: string;
   hash?: string;
-}
+};
 
-export interface Author {
+export type Author = {
   name: string;
   url?: string;
-}
+};
 
 /** `_data/archives.yml` の 1 開催分。 */
-export interface Archive {
+export type Archive = {
   id: number;
   date: string;
   author: Author;
@@ -26,17 +26,17 @@ export interface Archive {
   members: string[];
   log: string;
   links?: string[];
-}
+};
 
 /** `_data/next.yml` の次回予告 1 件。 */
-export interface Next {
+export type Next = {
   id: number;
   date: string;
   author: Author;
   vimrcs: Vimrc[];
   part?: string | null;
   other?: string | null;
-}
+};
 
 // `_data/` は Jekyll 時代の配置を維持する（プロジェクトルート直下）。
 const dataDir = new URL('../../_data/', import.meta.url);

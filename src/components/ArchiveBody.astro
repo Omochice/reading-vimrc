@@ -3,13 +3,13 @@ import type { Archive } from '../lib/data';
 import { formatDate } from '../lib/date';
 import { withBase, zeroPad } from '../lib/path';
 
-interface Props {
+type Props = {
   archive: Archive;
   /** 前の回（id - 1）が存在するか。 */
   hasPrev: boolean;
   /** 次の回（id + 1）が存在するか。 */
   hasNext: boolean;
-}
+};
 
 const { archive, hasPrev, hasNext } = Astro.props;
 
