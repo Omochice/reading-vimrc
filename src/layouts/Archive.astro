@@ -1,0 +1,21 @@
+---
+import Base from './Base.astro';
+import { withBase } from '../lib/path';
+
+interface Props {
+  title: string;
+  /** タイトル見出しのリンク先（このページ自身の URL）。 */
+  pageUrl: string;
+}
+
+const { title, pageUrl } = Astro.props;
+---
+
+<Base title={title}>
+  <div id="title">
+    <a href={withBase(pageUrl)}><h1>{title}</h1></a>
+    <p></p>
+    <hr />
+  </div>
+  <slot />
+</Base>

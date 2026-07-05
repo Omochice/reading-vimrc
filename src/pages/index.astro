@@ -1,0 +1,113 @@
+---
+import Default from '../layouts/Default.astro';
+import { getNext } from '../lib/data';
+import { formatDate } from '../lib/date';
+import { withBase } from '../lib/path';
+
+const next = getNext()[0];
+---
+
+<Default title="vimrc読書会" active="home" href={withBase('/')}>
+  <div class="next-vimrc">
+    <h3>次回予告</h3>
+    <ul>
+      <li>第{next.id}回</li>
+      <li>日時: <span class="date">{formatDate(next.date)}</span></li>
+      <li>
+        場所: <a href="https://app.gitter.im/#/room/#vim-jp_reading-vimrc:gitter.im"
+          >Gitter (Matrix #vim-jp_reading-vimrc:gitter.im)</a
+        >
+      </li>
+      <li>
+        vimrc: <a href={next.author.url}> {next.author.name}</a> さん
+        {next.part ? ` (${next.part})` : ''}
+      </li>
+      <ul>
+        {next.vimrcs.map((vimrc) => (
+          <li><a href={vimrc.url}>{vimrc.name}</a></li>
+        ))}
+      </ul>
+    </ul>
+    {next.other && <p>{next.other}</p>}
+
+    <p>※更新が遅れる場合、過去のものが掲載されている可能性があります。</p>
+  </div>
+
+  <h3>vimrc読書会とは</h3>
+  <p>オンラインで集まり、毎回みんなで特定の誰かの vimrc を読んで、気になるところやわからないところ、感心するところなどを好き勝手に言いあう集まりです。</p>
+
+  <h3>目的</h3>
+  <p>他の人の vimrc を読むことで、便利な設定を共有したり、便利なプラグインを発掘したり、Vim script に対する理解を深めたりします。
+    また、時には自身の vimrc を読んでもらうことで、vimrc の問題点を発見し、vimrc を洗練させます。コードレビューと同等の効果が期待できます。</p>
+
+  <h3>開催概要</h3>
+  <ul>
+    <li>日時: 毎週土曜日夜23時(JST)</li>
+    <li>場所: オンラインのチャットルーム <a href="https://app.gitter.im/#/room/#vim-jp_reading-vimrc:gitter.im">Gitter (Matrix #vim-jp_reading-vimrc:gitter.im)</a></li>
+  </ul>
+
+  <p>発言するには Matrix のアカウントが必要です。ログが読みたいだけなら、その必要はありません(各過去の開催ページにログへのリンクがあります)。
+    終了時間は特に決まっていませんが、毎回だいたい1時間くらいです。ただし、後述の通り途中参加/途中離脱OKです。</p>
+
+  <h3>おやくそく</h3>
+  <ul>
+    <li>途中参加/途中離脱OK。特に声をかける必要はないです</li>
+    <li>読む順はとくに決めないので、好きなように読んで好きなように発言しましょう</li>
+    <li>vimrc 内の特定位置を参照する場合は行番号で L100 や L100-110 のように指定します</li>
+    <li>特定の相手に発言/返事する場合は先頭に @username を付けます</li>
+    <li>一通り読み終わったら、読み終わったことを宣言してください。終了の目安にします
+      <ul>
+        <li>ただの目安なので、宣言してからでも読み返して全然OKです</li>
+      </ul>
+    </li>
+  </ul>
+
+  <h3>リクエスト</h3>
+  <ul>
+    <li><a href="https://github.com/vim-jp/reading-vimrc/wiki/Request">読みたいvimrcリクエスト</a></li>
+  </ul>
+
+  <p>今後読んでみたい vimrc を上記の wiki で追加する事ができます。
+    もし、読んでみたい vimrc があったらぜひ上記の wiki に追加してください！</p>
+
+  <h3>読まれることになった方へ</h3>
+  <p>本会では、広く公開されている vimrc の中から読む vimrc を勝手に選んで読んでいます。公開されているものは読まれても問題ないものであると考え、一定の手間を避けるために、基本的に vimrc の持ち主に連絡を行うことはありません。</p>
+
+  <p>ただし、もしあなたの vimrc が読まれることになり、かつ都合が悪い場合は、お手数ですが運営メンバーへご連絡ください。善処したいと思います。</p>
+
+  <p>例:</p>
+
+  <ul>
+    <li>読まれたくない！やめろ！
+      <ul>
+        <li>読むのを控えさせていただきます。ご迷惑をおかけしました。</li>
+      </ul>
+    </li>
+    <li>リクエストページに自分のが追加されているけど、読まれたくない…
+      <ul>
+        <li>読まないよう印を付けさせていただきます(再追加を避けるために、削除はしません)</li>
+      </ul>
+    </li>
+    <li>自分のが読まれるなら参加したいけど、その日は都合が悪い…
+      <ul>
+        <li>読む日を改めさせてもらいたいと思います。ご都合の良い日を教えてください。</li>
+      </ul>
+    </li>
+  </ul>
+
+  <h3>過去の開催</h3>
+  <p><a href={withBase('/archive/index.html')}>過去の開催はこちら</a></p>
+
+  <h3>運営</h3>
+  <p>主に開催の日程を決めたり、vimrc を探してきたり、当日の進行(と言っても開始と終了の合図をするくらい)をする人たちです。</p>
+
+  <ul>
+    <li><a href="https://github.com/thinca">thinca</a> (Twitter: <a href="https://twitter.com/thinca">@thinca</a>)</li>
+    <li><a href="https://github.com/rbtnn">rbtnn</a> (Twitter: <a href="https://twitter.com/rbtnn">@rbtnn</a>)</li>
+    <li><a href="https://github.com/haya14busa">haya14busa</a> (Twitter: <a href="https://twitter.com/haya14busa">@haya14busa</a>)</li>
+    <li><a href="https://github.com/ryunix">ryunix</a> (Twitter: <a href="https://twitter.com/ryunix">@ryunix</a>)</li>
+    <li><a href="https://github.com/Tatsuki-I">Tatsuki</a> (Twitter: <a href="https://twitter.com/ttk_vim">@ttk_vim</a>)</li>
+  </ul>
+
+  <p>運営者はいつでも募集中です。お気軽に声をかけてください！</p>
+</Default>

@@ -1,0 +1,40 @@
+---
+import Default from '../../layouts/Default.astro';
+import { getArchives } from '../../lib/data';
+import { formatDate } from '../../lib/date';
+import { withBase, zeroPad } from '../../lib/path';
+
+// 現行は Liquid の `reversed` で id 降順に表示していた。元配列を破壊しないよう複製する。
+const archives = getArchives().slice().reverse();
+---
+
+<Default title="過去の開催 - vimrc読書会" active="archive" href={withBase('/archive/index.html')}>
+  <table>
+    <thead>
+      <tr>
+        <th> ナンバー           </th>
+        <th> 日時                  </th>
+        <th> vimrc                                                                                                                     </th>
+        <th> ログ</th>
+      </tr>
+    </thead>
+    <tbody>
+      {
+        archives.map((archive) => (
+          <tr>
+            <td><a href={`${zeroPad(archive.id)}.html`}>第{archive.id}回</a></td>
+            <td>{formatDate(archive.date)}-</td>
+            <td>
+              <a href={archive.vimrcs[0].url}>{archive.author.name}</a> さん
+              {archive.part ? ` (${archive.part})` : ''}
+              <br />
+            </td>
+            <td><a href={archive.log}>ログ</a></td>
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+
+  <p><a href={withBase('/')}>トップに戻る</a></p>
+</Default>

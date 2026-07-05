@@ -1,0 +1,42 @@
+---
+import { withBase } from '../lib/path';
+
+interface Props {
+  active?: 'home' | 'archive' | 'stat';
+}
+
+const { active } = Astro.props;
+
+const homeHref = withBase('/');
+const archiveHref = withBase('/archive/index.html');
+const statHref = withBase('/stat/');
+const statNgHref = withBase('/stat/#/');
+---
+
+<nav>
+  <div class="nav-bar">
+    <button class="nav-toggle" data-toggle="collapse" data-target=".target">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <a class="nav-head" href={homeHref}>vimrc読書会</a>
+  </div>
+  <div class="collapse navbar-collapse target">
+    <ul class="nav-list">
+      <li class={active === 'home' ? 'active' : undefined}><a href={homeHref}>Home</a></li>
+      <li class={active === 'archive' ? 'active' : undefined}><a href={archiveHref}>Archive</a></li>
+      <li class={active === 'stat' ? 'active' : undefined}>
+        {
+          active === 'stat' ? (
+            <a href="" ng-href={statNgHref}>Stat</a>
+          ) : (
+            <a href={statHref}>Stat</a>
+          )
+        }
+      </li>
+      <li><a href="https://github.com/vim-jp/reading-vimrc/wiki/Request" target="request">Request</a></li>
+      <li><a href="https://app.gitter.im/#/room/#vim-jp_reading-vimrc:gitter.im" target="gitter">Chat room</a></li>
+    </ul>
+  </div>
+</nav>

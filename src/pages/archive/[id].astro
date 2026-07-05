@@ -1,0 +1,26 @@
+---
+import Archive from '../../layouts/Archive.astro';
+import ArchiveBody from '../../components/ArchiveBody.astro';
+import { getArchives } from '../../lib/data';
+import { zeroPad } from '../../lib/path';
+
+export function getStaticPaths() {
+  const archives = getArchives();
+  const ids = new Set(archives.map((archive) => archive.id));
+  return archives.map((archive) => ({
+    params: { id: zeroPad(archive.id) },
+    props: {
+      archive,
+      hasPrev: ids.has(archive.id - 1),
+      hasNext: ids.has(archive.id + 1),
+    },
+  }));
+}
+
+const { archive, hasPrev, hasNext } = Astro.props;
+const title = `第${archive.id}回 vimrc読書会`;
+---
+
+<Archive title={title} pageUrl={`/archive/${zeroPad(archive.id)}.html`}>
+  <ArchiveBody archive={archive} hasPrev={hasPrev} hasNext={hasNext} />
+</Archive>

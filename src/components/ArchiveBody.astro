@@ -1,0 +1,105 @@
+---
+import type { Archive } from '../lib/data';
+import { formatDate } from '../lib/date';
+import { withBase, zeroPad } from '../lib/path';
+
+interface Props {
+  archive: Archive;
+  /** 前の回（id - 1）が存在するか。 */
+  hasPrev: boolean;
+  /** 次の回（id + 1）が存在するか。 */
+  hasNext: boolean;
+}
+
+const { archive, hasPrev, hasNext } = Astro.props;
+
+// GitHub の blob URL を raw ダウンロード URL に変換する（現行 Liquid の
+// `remove_first:'blob/'` + `replace:'https://github.com','https://raw.github.com'` 相当）。
+function toRawUrl(url: string): string {
+  return url.replace('blob/', '').replace('https://github.com', 'https://raw.github.com');
+}
+
+const members = archive.members ?? [];
+---
+
+<h3>日時</h3>
+<p>{formatDate(archive.date)}-</p>
+
+<h3>vimrc</h3>
+<p>
+  {
+    archive.author.url ? (
+      <a href={archive.author.url}>{archive.author.name}</a>
+    ) : (
+      archive.author.name
+    )
+  } さんの vimrc を読みました{archive.part ? ` (${archive.part})` : ''}
+</p>
+<ul>
+  {
+    archive.vimrcs.map((vimrc) => (
+      <li>
+        <a href={vimrc.url}>{vimrc.name}</a>
+        {vimrc.url.includes('github') && (
+          <> (<a href={toRawUrl(vimrc.url)}>ダウンロード</a>)</>
+        )}
+      </li>
+    ))
+  }
+</ul>
+
+<h3>参加者リスト</h3>
+<p>{members.length} 名。</p>
+<ul>
+  {
+    members.map((member) => (
+      <li>
+        <a href={withBase(`/stat/#/u/${encodeURIComponent(member)}`)}>{member}</a>
+      </li>
+    ))
+  }
+</ul>
+
+<h3>ログ</h3>
+<p><a href={archive.log}>{archive.log}</a></p>
+
+{
+  archive.links && (
+    <>
+      <h3>関連リンク</h3>
+      <ul>
+        {archive.links.map((link) => (
+          <li>
+            <a href={link}>{link}</a>
+          </li>
+        ))}
+      </ul>
+    </>
+  )
+}
+
+{
+  archive.other && (
+    <>
+      <h3>その他</h3>
+      <p>{archive.other}</p>
+    </>
+  )
+}
+
+<div id="archive-nav" style="margin-top: 50px; margin-bottom: 0px;">
+  {
+    hasPrev && (
+      <span>
+        <a href={`${zeroPad(archive.id - 1)}.html`}>« 第{archive.id - 1}回</a>
+      </span>
+    )
+  }
+  {
+    hasNext && (
+      <span style="float: right;">
+        <a href={`${zeroPad(archive.id + 1)}.html`}>第{archive.id + 1}回 »</a>
+      </span>
+    )
+  }
+</div>

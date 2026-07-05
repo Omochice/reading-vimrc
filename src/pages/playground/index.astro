@@ -1,0 +1,11 @@
+---
+import Default from '../../layouts/Default.astro';
+import { withBase } from '../../lib/path';
+---
+
+<Default title="Playground" href={withBase('/playground/index.html')}>
+  <h1>Playground</h1>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" is:inline></script>
+  <script src={withBase('/javascripts/stat.js')} is:inline></script>
+</Default>

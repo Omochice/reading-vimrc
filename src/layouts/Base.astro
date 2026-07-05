@@ -1,0 +1,46 @@
+---
+import Navigation from '../components/Navigation.astro';
+import GoogleAnalytics from '../components/GoogleAnalytics.astro';
+import { withBase } from '../lib/path';
+
+interface Props {
+  title?: string;
+  active?: 'home' | 'archive' | 'stat';
+}
+
+const { title, active } = Astro.props;
+---
+
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <title>{title}</title>
+    <link rel="stylesheet" href={withBase('/stylesheets/styles.css')} />
+    <link rel="stylesheet" href={withBase('/stylesheets/pygment_trac.css')} />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" is:inline></script>
+    <script src={withBase('/javascripts/respond.js')} is:inline></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href={withBase('/stylesheets/ie.css')}>
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  </head>
+  <body>
+    <div class="wrapper">
+      <div id="header">
+        <Navigation active={active} />
+      </div>
+      <section>
+        <slot />
+      </section>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+
+    <script src={withBase('/javascripts/navigation.js')} is:inline></script>
+    <GoogleAnalytics />
+  </body>
+</html>

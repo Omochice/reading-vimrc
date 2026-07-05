@@ -1,0 +1,73 @@
+---
+import Navigation from '../../components/Navigation.astro';
+import GoogleAnalytics from '../../components/GoogleAnalytics.astro';
+import { withBase } from '../../lib/path';
+
+// 現行 _layouts/angular.html + stat/index.html 相当。AngularJS SPA を使うため
+// Base レイアウトは使わず、angular / d3 / perfect-scrollbar を読み込む専用 head を持つ。
+const title = 'vimrc読書会 Stat';
+---
+
+<!doctype html>
+<html ng-app="stat">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <title>{title}</title>
+    <link rel="stylesheet" href={withBase('/stylesheets/styles.css')} />
+    <link rel="stylesheet" href={withBase('/stylesheets/pygment_trac.css')} />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" is:inline></script>
+    <script src={withBase('/javascripts/respond.js')} is:inline></script>
+
+    <link rel="stylesheet" href={withBase('/stylesheets/stat.css')} />
+    <link rel="stylesheet" href={withBase('/assets/perfect-scrollbar-0.4.10.min.css')} />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.14/angular.min.js" is:inline></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.14/angular-resource.min.js" is:inline></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.14/angular-route.min.js" is:inline></script>
+
+    <script src="https://d3js.org/d3.v3.min.js" charset="utf-8" is:inline></script>
+
+    <script src={withBase('/assets/perfect-scrollbar-0.4.10.with-mousewheel.min.js')} is:inline></script>
+    {/*
+      stat.js は Liquid の代わりにこのグローバルから base path を得る。
+      stat.js 側は `BASE + 'json/...'` のように連結するため、末尾スラッシュ付きの
+      値（例: '/reading-vimrc/'）を渡す。`import.meta.env.BASE_URL` はこの設定では
+      末尾スラッシュを持たないため withBase('/') で正規化する。
+    */}
+    <script is:inline define:vars={{ base: withBase('/') }}>
+      window.READING_VIMRC_BASE = base;
+    </script>
+    <script src={withBase('/javascripts/stat.js')} is:inline></script>
+
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href={withBase('/stylesheets/ie.css')}>
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+  <body>
+    <div class="wrapper">
+      <div id="header">
+        <Navigation active="stat" />
+      </div>
+
+      <section>
+        <div id="title">
+          <a href={withBase('/stat/')}><h1>{title}</h1></a>
+          <p></p>
+          <hr />
+        </div>
+        <div id="reading-vimrc-stat">
+          <div ng-view></div>
+        </div>
+      </section>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+
+    <script src={withBase('/javascripts/navigation.js')} is:inline></script>
+    <GoogleAnalytics />
+  </body>
+</html>
